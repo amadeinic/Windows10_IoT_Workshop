@@ -23,18 +23,19 @@
                     Margin="5"
                     Orientation="Vertical">
         <ToggleSwitch Header="Rosso" 
-                      Name="swRosso"
-                      Margin="5" Toggled="swRosso_Toggled"></ToggleSwitch>
+                      Name="Rosso"
+                      Margin="5" Toggled="Switch_Toggled"></ToggleSwitch>
         <ToggleSwitch Header="Giallo" 
-                      Name="swGiallo"
-                      Margin="5" Toggled="swGiallo_Toggled"></ToggleSwitch>
+                      Name="Giallo"
+                      Margin="5" Toggled="Switch_Toggled"></ToggleSwitch>
         <ToggleSwitch Header="Verde" 
-                      Name="swVerde"
-                      Margin="5" Toggled="swVerde_Toggled"></ToggleSwitch>
+                      Name="Verde"
+                      Margin="5" Toggled="Switch_Toggled"></ToggleSwitch>
         </StackPanel>
         
-        <CommandBar Grid.Row="2">            
-            <AppBarToggleButton Name="abtnDelete" Icon="Delete" Label="Reset" Click="abtnDelete_Click" />            
+        <CommandBar Grid.Row="2">
+            <AppBarToggleButton Name="abtnLight" Icon="Accept" Label="Turn On" Click="abtnLight_Click"/>
+            <AppBarToggleButton Name="abtnOff" Icon="Cancel" Label="Turn Off" Click="abtnOff_Click"/>            
             <CommandBar.SecondaryCommands>
                 <AppBarButton Icon="ContactInfo" Label="About" Click="abtnInfo_Click" />
             </CommandBar.SecondaryCommands>

@@ -36,7 +36,7 @@ namespace FLR.RemoteLedCommander
 
         public Pubnub Messenger { get; set; }
 
-        public void PubNubPull(Messaggio msg)
+        public void GoToPubnub(Messaggio msg)
         {
             //Pull To Pubnub
             try
@@ -85,42 +85,41 @@ namespace FLR.RemoteLedCommander
                 }
             }
             Messenger = new Pubnub("pub-c-6133a45b-d0a7-48d7-a1a8-ca611ee0826e", "sub-c-b0c87e72-0af3-11e6-996b-0619f8945a4f");
-        }
-
-        private void abtnDelete_Click(object sender, RoutedEventArgs e)
-        {
-            swRosso.IsOn = false;
-            swGiallo.IsOn = false;
-            swVerde.IsOn = false;
-        }
+        }        
 
         private async void abtnInfo_Click(object sender, RoutedEventArgs e)
         {
             await new MessageDialog("Sviluppato da Nicola Amadei e Mattia Navacchia di FabLab Romagna\n2016 - ITTS O. Belluzzi - L. Da Vinci Rimini", "Here we are!").ShowAsync();
-        }
+        }        
 
-        private void swRosso_Toggled(object sender, RoutedEventArgs e)
-        {           
-            PubNubPull(new Messaggio() { Led = "Rosso", Stato = swRosso.IsOn });
-        }
-
-        private void swGiallo_Toggled(object sender, RoutedEventArgs e)
-        {
-            PubNubPull(new Messaggio() { Led = "Giallo", Stato = swGiallo.IsOn });
-        }
-
-        private void swVerde_Toggled(object sender, RoutedEventArgs e)
-        {
-            PubNubPull(new Messaggio() { Led = "Verde", Stato = swVerde.IsOn });
+        private void Switch_Toggled(object sender, RoutedEventArgs e)
+        {            
+            ToggleSwitch tsw = sender as ToggleSwitch;
+            GoToPubnub(new Messaggio() { Led = tsw.Name, Stato = tsw.IsOn });
         }
 
         public void DisplayReturnMessage(string result)
         {
            
         }
+
         public void DisplayErrorMessage(PubnubClientError result)
         {
 
+        }
+
+        private void abtnOff_Click(object sender, RoutedEventArgs e)
+        {
+            Rosso.IsOn = false;
+            Giallo.IsOn = false;
+            Verde.IsOn = false;
+        }
+
+        private void abtnLight_Click(object sender, RoutedEventArgs e)
+        {
+            Rosso.IsOn = true;
+            Giallo.IsOn = true;
+            Verde.IsOn = true;
         }
     }
 }
