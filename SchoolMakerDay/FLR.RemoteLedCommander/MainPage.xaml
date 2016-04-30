@@ -1,0 +1,53 @@
+﻿<Page
+    x:Class="FLR.RemoteLedCommander.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FLR.RemoteLedCommander"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" Loaded="Page_Loaded">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Image Grid.Column="0" Source="Assets/logoicon.png" Width="120"></Image>
+            <TextBlock Grid.Column="1"                       
+                       VerticalAlignment="Center"
+                       FontSize="26">FabLab Romagna</TextBlock>
+        </Grid>
+
+        <StackPanel Grid.Row="1"
+                    Margin="5"
+                    Orientation="Vertical">
+            <Slider Name="Red" Header="Rosso" Maximum="255" Margin="5"/>
+            <Slider Name="Green" Header="Verde" Maximum="255" Margin="5"/>
+            <Slider Name="Blue" Header="Blu" Maximum="255" Margin="5"/>
+        </StackPanel>
+
+        <Image Grid.Row="2" Margin="5" MaxWidth="250" Source="Assets/School-Maker-Day.png"></Image>
+
+        <CommandBar Grid.Row="3">
+            <AppBarToggleButton Name="abtnOn" Icon="Accept" Label="Turn On" Click="abtnOn_Click"/>
+            <AppBarToggleButton Name="abtnOff" Icon="Cancel" Label="Turn Off" Click="abtnOff_Click"/>
+            <AppBarToggleButton Name="abtnSend" Icon="Globe" Label="Send" Click="abtnSend_Click"/>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Icon="ContactInfo" Label="About" Click="abtnInfo_Click" />
+            </CommandBar.SecondaryCommands>
+
+            <CommandBar.Content>
+                <TextBlock Text="SMD 2016" Margin="12,14"/>
+            </CommandBar.Content>
+        </CommandBar>
+    </Grid>
+</Page>

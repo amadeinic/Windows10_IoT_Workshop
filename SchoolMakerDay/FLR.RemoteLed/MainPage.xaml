@@ -12,6 +12,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
@@ -37,15 +38,18 @@
             </StackPanel>
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Ellipse x:Name="epsLedG" Fill="LightGray" Stroke="White" Width="100" Height="100" Margin="10"/>
-                <TextBlock x:Name="lblLedG" Text="Giallo" Margin="10" TextAlignment="Center" FontSize="26.667" />                
+                <TextBlock x:Name="lblLedG" Text="Verde" Margin="10" TextAlignment="Center" FontSize="26.667" />                
             </StackPanel>
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Ellipse x:Name="epsLedV" Fill="LightGray" Stroke="White" Width="100" Height="100" Margin="10"/>
-                <TextBlock x:Name="lblLedV" Text="Verde" Margin="10" TextAlignment="Center" FontSize="26.667" />                
+                <Ellipse x:Name="epsLedB" Fill="LightGray" Stroke="White" Width="100" Height="100" Margin="10"/>
+                <TextBlock x:Name="lblLedB" Text="Blu" Margin="10" TextAlignment="Center" FontSize="26.667" />                
             </StackPanel>
         </StackPanel>
 
-        <TextBlock Grid.Row="2" Margin="5" FontSize="26" Name="lblStatus"></TextBlock>
+
+        <Image Grid.Row="2" Margin="5" MaxWidth="250" Source="Assets/School-Maker-Day.png"></Image>
+
+        <TextBlock Grid.Row="3" Margin="5" FontSize="20" Name="lblStatus"></TextBlock>
         
     </Grid>
 </Page>

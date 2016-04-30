@@ -38,11 +38,11 @@ namespace FLR.RemoteLed
         public IBuildGroveDevices GrovePi { get; set; }
         public ILed LedR { get; set; }
         public ILed LedG { get; set; }
-        public ILed LedV { get; set; }
+        public ILed LedB { get; set; }
         public bool HasGPIO { get; set; }
         private SolidColorBrush grayBrush = new SolidColorBrush(Windows.UI.Colors.LightGray);
         private SolidColorBrush redBrush = new SolidColorBrush(Windows.UI.Colors.Red);
-        private SolidColorBrush yellowBrush = new SolidColorBrush(Windows.UI.Colors.Yellow);
+        private SolidColorBrush blueBrush = new SolidColorBrush(Windows.UI.Colors.Blue);
         private SolidColorBrush greenBrush = new SolidColorBrush(Windows.UI.Colors.Green);
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -52,14 +52,14 @@ namespace FLR.RemoteLed
             {
                 HasGPIO = true;                 
                 GrovePi = DeviceFactory.Build;
-                LedR = GrovePi.Led(Pin.DigitalPin2).ChangeState(SensorStatus.Off);
-                LedG = GrovePi.Led(Pin.DigitalPin3).ChangeState(SensorStatus.Off);
-                LedV = GrovePi.Led(Pin.DigitalPin4).ChangeState(SensorStatus.Off);
-                lblStatus.Text = "Ho trovato un controller!";      
+                LedR = GrovePi.Led(Pin.DigitalPin3).ChangeState(SensorStatus.Off);
+                LedG = GrovePi.Led(Pin.DigitalPin5).ChangeState(SensorStatus.Off);
+                LedB = GrovePi.Led(Pin.DigitalPin6).ChangeState(SensorStatus.Off);
+                lblStatus.Text = "Ho trovato una GPIO!";      
             }
             else
             {
-                lblStatus.Text = "Nessun controller!";
+                lblStatus.Text = "Nessuna GPIO!";
             }
             Messenger = new Pubnub("pub-c-6133a45b-d0a7-48d7-a1a8-ca611ee0826e", "sub-c-b0c87e72-0af3-11e6-996b-0619f8945a4f");
             Messenger.Subscribe<string>("flr_remoteled", userCallBack, connectCallback, errorCallback);
@@ -75,57 +75,27 @@ namespace FLR.RemoteLed
                     {
                         List<object> deserializedMessage = Messenger.JsonPluggableLibrary.DeserializeToListOfObject(obj);
                         Messaggio msg = JsonConvert.DeserializeObject<Messaggio>(deserializedMessage[0].ToString());
-                        switch(msg.Led)
+                        if (HasGPIO)
                         {
-                            case "Rosso":
-                                {
-                                    if (msg.Stato)
-                                    {
-                                        if(HasGPIO)
-                                            LedR.ChangeState(SensorStatus.On);
-                                        epsLedR.Fill = redBrush;
-                                    }
-                                    else
-                                    {
-                                        if(HasGPIO)
-                                            LedR.ChangeState(SensorStatus.Off);
-                                        epsLedR.Fill = grayBrush;
-                                    }
-                                    break;
-                                }
-                            case "Giallo":
-                                {
-                                    if (msg.Stato)
-                                    {
-                                        if(HasGPIO)
-                                            LedG.ChangeState(SensorStatus.On);
-                                        epsLedG.Fill = yellowBrush;
-                                    }
-                                    else
-                                    {
-                                        if(HasGPIO)
-                                            LedG.ChangeState(SensorStatus.Off);
-                                        epsLedG.Fill = grayBrush;
-                                    }
-                                    break;
-                                }
-                            case "Verde":
-                                {
-                                    if (msg.Stato)
-                                    {
-                                        if(HasGPIO)
-                                            LedV.ChangeState(SensorStatus.On);
-                                        epsLedV.Fill = greenBrush;
-                                    }
-                                    else
-                                    {
-                                        if(HasGPIO)
-                                            LedV.ChangeState(SensorStatus.Off);
-                                        epsLedV.Fill = grayBrush;
-                                    }
-                                    break;
-                                }
+                            LedR.AnalogWrite((byte)msg.Red);
+                            LedG.AnalogWrite((byte)msg.Green);
+                            LedB.AnalogWrite((byte)msg.Blue);
                         }
+
+                        if (msg.Red != 0)
+                            epsLedR.Fill = redBrush;
+                        else
+                            epsLedR.Fill = grayBrush;
+
+                        if (msg.Green != 0)
+                            epsLedG.Fill = greenBrush;
+                        else
+                            epsLedG.Fill = grayBrush;
+
+                        if (msg.Blue != 0)
+                            epsLedB.Fill = blueBrush;
+                        else
+                            epsLedB.Fill = grayBrush;                        
                     }
                 );
             }

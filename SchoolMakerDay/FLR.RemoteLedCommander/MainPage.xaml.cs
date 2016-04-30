@@ -40,12 +40,10 @@ namespace FLR.RemoteLedCommander
         {
             //Pull To Pubnub
             try
-            {                
-                string s = JsonConvert.SerializeObject(msg);
-
-                Messenger.Publish<string>(
+            {
+                Messenger.Publish(
                     "flr_remoteled",
-                    s,
+                    msg,
                     false,
                     DisplayReturnMessage,
                     DisplayErrorMessage
@@ -59,48 +57,19 @@ namespace FLR.RemoteLedCommander
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            //PC customization
-            if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.ApplicationView"))
-            {
-                var titleBar = ApplicationView.GetForCurrentView().TitleBar;
-                if (titleBar != null)
-                {
-                    titleBar.BackgroundColor = Colors.DarkRed;
-                    titleBar.ButtonForegroundColor = Colors.White;
-                    titleBar.BackgroundColor = Color.FromArgb(0xff, 0xe7, 0x25, 0x1d);
-                    titleBar.ForegroundColor = Colors.White;
-                }
-            }
-
-            //Mobile customization
-            if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
-            {
-
-                var statusBar = StatusBar.GetForCurrentView();
-                if (statusBar != null)
-                {
-                    statusBar.BackgroundOpacity = 1;
-                    statusBar.BackgroundColor = Color.FromArgb(0xff, 0xe7, 0x25, 0x1d);
-                    statusBar.ForegroundColor = Colors.White;
-                }
-            }
             Messenger = new Pubnub("pub-c-6133a45b-d0a7-48d7-a1a8-ca611ee0826e", "sub-c-b0c87e72-0af3-11e6-996b-0619f8945a4f");
-        }        
+        }
 
         private async void abtnInfo_Click(object sender, RoutedEventArgs e)
         {
             await new MessageDialog("Sviluppato da Nicola Amadei e Mattia Navacchia di FabLab Romagna\n2016 - ITTS O. Belluzzi - L. Da Vinci Rimini", "Here we are!").ShowAsync();
-        }        
-
-        private void Switch_Toggled(object sender, RoutedEventArgs e)
-        {            
-            ToggleSwitch tsw = sender as ToggleSwitch;
-            GoToPubnub(new Messaggio() { Led = tsw.Name, Stato = tsw.IsOn });
         }
 
-        public void DisplayReturnMessage(string result)
+
+
+        public void DisplayReturnMessage(object result)
         {
-           
+
         }
 
         public void DisplayErrorMessage(PubnubClientError result)
@@ -110,16 +79,24 @@ namespace FLR.RemoteLedCommander
 
         private void abtnOff_Click(object sender, RoutedEventArgs e)
         {
-            Rosso.IsOn = false;
-            Giallo.IsOn = false;
-            Verde.IsOn = false;
+            Red.Value = 0;
+            Green.Value = 0;
+            Blue.Value = 0;
+            abtnSend_Click(sender, null);
         }
 
-        private void abtnLight_Click(object sender, RoutedEventArgs e)
+        private void abtnOn_Click(object sender, RoutedEventArgs e)
         {
-            Rosso.IsOn = true;
-            Giallo.IsOn = true;
-            Verde.IsOn = true;
+            Red.Value = 255;
+            Green.Value = 255;
+            Blue.Value = 255;
+            abtnSend_Click(sender, null);            
+        }
+
+        private void abtnSend_Click(object sender, RoutedEventArgs e)
+        {
+            Messaggio msg = new Messaggio { Red = (int)Red.Value, Green = (int)Green.Value, Blue = (int)Blue.Value };
+            GoToPubnub(msg);
         }
     }
 }
